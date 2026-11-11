@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Skill Audit — Jacob Langlais</title>
+    <meta name="description" content="Independent audits of agent skills, checked claim by claim. Written reports and a grade. Skill Audit $249, Data Cleanup Audit $1,500." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#fdfdfa;
+        --ink:#1b1b18;
+        --ink-2:#4c4c47;
+        --ink-3:#7a7a73;
+        --line:#dcdcd4;
+        --line-strong:#1b1b18;
+        --accent:#8a3320;
+        --accent-soft:#f6ece8;
+        color-scheme:light;
+      }
+      @media (prefers-color-scheme:dark){
+        :root{
+          --bg:#141412;
+          --ink:#ecece6;
+          --ink-2:#bdbdb2;
+          --ink-3:#8e8e84;
+          --line:#2e2e2a;
+          --line-strong:#ecece6;
+          --accent:#e08a6e;
+          --accent-soft:#2a1c17;
+          color-scheme:dark;
+        }
+      }
+      *{box-sizing:border-box}
+      html{-webkit-text-size-adjust:100%}
+      body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;font-size:17px;line-height:1.7}
+      ::selection{background:var(--accent-soft)}
+      a{color:var(--accent);text-underline-offset:3px}
+      .wrap{max-width:720px;margin:0 auto;padding:0 24px 80px}
+      code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.86em;word-break:break-word}
+
+      /* Masthead */
+      .masthead{padding:28px 0 0;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink-3);border-bottom:1px solid var(--line);padding-bottom:14px}
+      .masthead strong{color:var(--ink);font-weight:500}
+
+      /* Intro */
+      .intro{padding:52px 0 0}
+      h1{font-family:"IBM Plex Serif",Georgia,serif;font-weight:700;font-size:clamp(36px,6vw,52px);line-height:1.08;letter-spacing:-.015em;margin:0 0 22px;max-width:12em}
+      .byline{font-size:16px;color:var(--ink-2);margin:0 0 22px}
+      .byline strong{color:var(--ink);font-weight:600}
+      .intro p{color:var(--ink-2);margin:0 0 16px;max-width:38em}
+      .intro p strong{color:var(--ink);font-weight:600}
+      .stance{font-family:"IBM Plex Serif",Georgia,serif;font-size:21px;line-height:1.45;font-weight:600;color:var(--ink);margin:30px 0 6px;max-width:26em}
+
+      /* Generic section */
+      section{margin-top:72px;border-top:2px solid var(--line-strong);padding-top:22px}
+      section.tight{margin-top:48px;border-top:1px solid var(--line)}
+      h2{font-family:"IBM Plex Serif",Georgia,serif;font-size:26px;font-weight:700;line-height:1.2;margin:0 0 6px;letter-spacing:-.01em}
+      .sec-meta{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink-3);margin:0 0 18px}
+      h3{font-family:"IBM Plex Serif",Georgia,serif;font-size:22px;font-weight:700;line-height:1.25;margin:0 0 4px}
+      h4{font-size:16.5px;font-weight:600;margin:34px 0 8px}
+      p{color:var(--ink-2)}
+      p strong, li strong{color:var(--ink);font-weight:600}
+
+      /* Excerpt */
+      .excerpt-grade{font-family:"IBM Plex Serif",Georgia,serif;font-size:19px;color:var(--ink);margin:0 0 14px}
+      .excerpt-grade .g{font-size:28px;font-weight:700}
+      .excerpt p{margin:0 0 14px;max-width:38em}
+      .numbers{list-style:none;margin:18px 0 18px;padding:0;border-top:1px solid var(--line)}
+      .numbers li{display:flex;justify-content:space-between;gap:20px;padding:7px 0;border-bottom:1px solid var(--line);font-size:15.5px;color:var(--ink-2)}
+      .numbers li b{font-family:"IBM Plex Mono",monospace;font-weight:500;color:var(--ink);white-space:nowrap}
+      .excerpt .more{font-size:15.5px;margin-top:18px}
+
+      /* Offers */
+      .offer{padding:26px 0 8px;border-top:1px solid var(--line)}
+      .offer:first-of-type{border-top:none;padding-top:10px}
+      .offer .price-line{font-family:"IBM Plex Mono",monospace;font-size:15px;color:var(--ink);margin:2px 0 14px}
+      .offer .price-line .amt{font-size:22px;font-weight:500}
+      .offer p{margin:0 0 14px;max-width:38em}
+      dl.checks{margin:20px 0 0}
+      dl.checks div{padding:12px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:170px 1fr;gap:4px 22px}
+      dl.checks dt{font-weight:600;font-size:15.5px;color:var(--ink)}
+      dl.checks dd{margin:0;color:var(--ink-2);font-size:16px}
+      .receive{margin:20px 0 8px;padding-top:14px;border-top:1px solid var(--line);font-size:16px;color:var(--ink-2);max-width:38em}
+      .receive .r-label{display:block;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-3);margin-bottom:4px}
+      .receive strong{color:var(--ink)}
+
+      /* Method */
+      .method p{max-width:38em;margin:0 0 14px}
+      ol.steps{list-style:none;counter-reset:step;margin:24px 0 0;padding:0}
+      ol.steps li{counter-increment:step;padding:14px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:40px 1fr;gap:14px}
+      ol.steps li::before{content:counter(step,decimal-leading-zero);font-family:"IBM Plex Mono",monospace;font-size:13.5px;color:var(--ink-3);padding-top:4px}
+      ol.steps h4{margin:0 0 2px;font-size:16px}
+      ol.steps p{margin:0;font-size:16px}
+
+      /* Full review */
+      .review-intro{font-size:16.5px}
+      .review p{margin:0 0 14px;max-width:38em}
+      .review ol,.review ul{color:var(--ink-2);padding-left:22px;margin:0 0 10px}
+      .review li{margin:12px 0;max-width:38em}
+      .note{font-size:15px;font-style:italic;color:var(--ink-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin:20px 0;max-width:38em}
+      .verdict{margin-top:10px;padding-top:16px;border-top:2px solid var(--line-strong)}
+      .verdict p:first-child{font-family:"IBM Plex Serif",Georgia,serif;font-size:20px;color:var(--ink)}
+
+      /* Booking */
+      .book p{max-width:38em;margin:0 0 14px}
+      .pick-label{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink-3);margin:26px 0 8px}
+      .pick{display:block}
+      .pick button{display:block;width:100%;font:inherit;font-size:16.5px;text-align:left;background:none;border:none;border-top:1px solid var(--line);padding:14px 0;cursor:pointer;color:var(--ink-2)}
+      .pick button:last-child{border-bottom:1px solid var(--line)}
+      .pick button .p-price{font-family:"IBM Plex Mono",monospace;font-size:13.5px;color:var(--ink-3);margin-left:10px}
+      .pick button[aria-pressed="true"]{color:var(--ink);font-weight:600;box-shadow:inset 0 -3px 0 var(--accent)}
+      .pick button:focus-visible,.cta:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+      .include{margin:24px 0 0;font-size:15.5px;color:var(--ink-2)}
+      .include .i-label{display:block;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-3);margin-bottom:6px}
+      .include ul{margin:0;padding-left:20px}
+      .include li{margin:3px 0}
+      .cta{display:inline-block;margin-top:28px;font-family:"IBM Plex Serif",Georgia,serif;font-size:20px;font-weight:700;color:var(--accent);text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px}
+      .fineprint{font-size:14px;color:var(--ink-3);margin-top:10px}
+      .after{margin-top:30px;border-top:1px solid var(--line)}
+      .after div{padding:12px 0;border-bottom:1px solid var(--line)}
+      .after .n{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-3);display:block}
+      .after p{margin:2px 0 0;font-size:15px}
+      .after p strong{color:var(--ink);display:block;font-size:15.5px}
+
+      footer{margin-top:72px;padding-top:16px;border-top:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink-3)}
+      footer p{margin:0 0 4px;color:var(--ink-3)}
+
+      @media(max-width:640px){
+        body{font-size:16px}
+        .wrap{padding:0 18px 60px}
+        .intro{padding-top:38px}
+        section{margin-top:56px}
+        dl.checks div{grid-template-columns:1fr;gap:2px}
+        .numbers li{flex-direction:column;gap:0}
+        .numbers li b{white-space:normal}
+      }
+      @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <div class="masthead">
+        <span><strong>Skill Audit</strong></span>
+        <span>Independent · Fixed price · Written reports</span>
+      </div>
+
+      <!-- Intro -->
+      <header class="intro">
+        <h1>I read agent skills line by line, and check every claim in them.</h1>
+        <p class="byline">Audits by <strong>Jacob Langlais</strong>, product manager.</p>
+        <p>
+          A skill is a set of instructions an agent follows, plus a description that decides when the
+          agent uses it. Most descriptions are never checked against the files behind them. I do that
+          check: I read the whole skill, list every claim it makes, and test each one against what
+          the skill actually does.
+        </p>
+        <p>
+          I work the same way I built a <strong>376-rule business rules inventory</strong> — every rule
+          extracted, sourced, and checked one at a time until the list could be trusted as the record.
+          Skills get the same treatment: <strong>rule by rule, claim by claim</strong>. Nothing sampled,
+          nothing taken on the author's word.
+        </p>
+        <p class="stance">Most skills fail on their trigger description, not their content.</p>
+        <p>
+          Two fixed-price audits are offered below. Each ends in a written report. No hourly billing,
+          no retainer.
+        </p>
+      </header>
+
+      <!-- Excerpt, high on the page -->
+      <section aria-labelledby="excerpt-h">
+        <h2 id="excerpt-h">From Review #1</h2>
+        <p class="sec-meta">Ponytail, by Dietrich Gebert · Reviewed November 2026 · Done free, as a demonstration</p>
+        <p class="excerpt-grade">Grade: <span class="g">A-</span></p>
+        <div class="excerpt">
+          <p>
+            Ponytail is a mode for coding agents: a six-rung ladder that asks, before any code is
+            written, whether the thing needs to exist at all. Its current headline numbers are:
+          </p>
+          <ul class="numbers">
+            <li><span>Less code than no skill</span><b>−53%</b></li>
+            <li><span>Less time</span><b>−41%</b></li>
+            <li><span>Lower cost</span><b>−26%</b></li>
+            <li><span>Fewer tokens</span><b>−45%</b></li>
+            <li><span>Risky logic that ships with a test</span><b>98%, vs 68% without</b></li>
+          </ul>
+          <p>
+            Those numbers rest on a 39-task benchmark, 5 runs per arm, 585 sessions, reported with
+            95% bootstrap intervals — and the repo itself corrects the older “80 to 94%” figure that
+            made the skill known. That correction is in the benchmark file, dated 2026-06-18, crediting
+            the issue that raised it.
+          </p>
+          <p>
+            <strong>The main finding:</strong> the skill collides with its own sibling. The main skill's
+            description claims “reviewing” as a trigger; the bundled <code>ponytail-review</code> skill
+            claims “review this”, “code review”, and “review my PR”. The plugin installs both by
+            default, so one review request matches two skills with different output contracts.
+          </p>
+          <p class="more"><a href="#full-review">Read the full review below</a> — claims check, four quality findings, safety findings, and three fixes in priority order.</p>
+        </div>
+      </section>
+
+      <!-- Offers -->
+      <section aria-labelledby="offers-h">
+        <h2 id="offers-h">The two audits</h2>
+        <p class="sec-meta">Price is fixed and confirmed in writing before any work starts.</p>
+
+        <article class="offer" aria-labelledby="skill-audit-h">
+          <h3 id="skill-audit-h">Skill Audit</h3>
+          <p class="price-line"><span class="amt">$249</span> &nbsp;founding price — first five audits, per skill</p>
+          <p>
+            For authors publishing an agent skill, on GitHub, a registry, or bundled with a product.
+            One skill, read the way a careful user — and a hostile one — would read it.
+          </p>
+          <dl class="checks">
+            <div>
+              <dt>Claims</dt>
+              <dd>Each stated capability, number, and requirement is checked against the skill's files and behavior. Claims that are wrong or overstated are listed with the evidence.</dd>
+            </div>
+            <div>
+              <dt>Instructions</dt>
+              <dd>Trigger conditions, step order, edge cases, and conflicts — including overlap with sibling skills, and places where an agent could reasonably read an instruction two ways.</dd>
+            </div>
+            <div>
+              <dt>Safety</dt>
+              <dd>What files, network, and credentials the skill can reach; actions that cannot be undone; and instructions that act on content from outside the skill.</dd>
+            </div>
+          </dl>
+          <p class="receive">
+            <span class="r-label">YOU RECEIVE</span>
+            A <strong>written report</strong>, finding by finding, with the evidence for each — and an
+            overall <strong>grade, given as a letter</strong>. The grade is not for sale: a paid audit is
+            graded on the same standard as the free review above.
+          </p>
+        </article>
+
+        <article class="offer" aria-labelledby="data-audit-h">
+          <h3 id="data-audit-h">Data Cleanup Audit</h3>
+          <p class="price-line"><span class="amt">$1,500</span> &nbsp;fixed fee, per engagement</p>
+          <p>
+            For companies about to let agents read internal data — wikis, drives, tickets, docs,
+            databases. This audit answers three plain questions about each source: can an agent find
+            the right one, is what it says current, and does another source say something different?
+          </p>
+          <dl class="checks">
+            <div>
+              <dt>Source list</dt>
+              <dd>Every source an agent would touch, written down: what it holds, who owns it, and whether it is the only copy or one of several.</dd>
+            </div>
+            <div>
+              <dt>Quality</dt>
+              <dd>Duplicates, contradictions between sources, pages nobody has updated or owns, and knowledge that exists only in people's heads — the things that make an agent wrong with confidence.</dd>
+            </div>
+            <div>
+              <dt>Access</dt>
+              <dd>Permissions an agent would inherit, missing titles and descriptions, and sources that exist but cannot be reliably found or cited.</dd>
+            </div>
+          </dl>
+          <p class="receive">
+            <span class="r-label">YOU RECEIVE</span>
+            A <strong>written findings report</strong>: the source list, findings ordered by how much
+            damage each can do to an agent's answers, and a <strong>cleanup order</strong> — what to fix
+            first, what can wait, what to delete. Scope is capped at five data sources; more sources
+            are quoted separately, after the first report.
+          </p>
+        </article>
+      </section>
+
+      <!-- Method -->
+      <section class="tight method" aria-labelledby="method-h">
+        <h2 id="method-h">How an audit runs</h2>
+        <p class="sec-meta">Four steps. One person, start to finish.</p>
+        <p>
+          The person who reads your skill writes your report. There is no handoff and no summary of
+          a summary.
+        </p>
+        <ol class="steps">
+          <li><div><h4>List</h4><p>Every claim, instruction, and rule is written into a list before any judgment. If it is not on the list, it is not assumed. If it is on the list, it gets checked.</p></div></li>
+          <li><div><h4>Check</h4><p>Each item is tested against the source: the skill's own files and observed behavior, or the live data source. Findings name the file, line, or document they came from.</p></div></li>
+          <li><div><h4>Push on it</h4><p>Instructions and sources are tried past the easy case — unclear inputs, rules that conflict, content from outside, copies that are out of date — to find where an agent goes wrong in normal use, not in a demo.</p></div></li>
+          <li><div><h4>Report and grade</h4><p>Findings are written in plain language, ordered by how much they matter, and rolled into one grade: a letter, in the text of the report.</p></div></li>
+        </ol>
+      </section>
+
+      <!-- Full review -->
+      <section id="full-review" class="review" aria-labelledby="review1-h">
+        <h2 id="review1-h">Review #1, in full</h2>
+        <p class="sec-meta">Skill Audit — completed review</p>
+
+        <h3>Skill Audit: Ponytail by Dietrich Gebert</h3>
+        <p class="review-intro" style="color:var(--ink-2)">
+          A session-persistent mode for coding agents. Once active, every coding task runs through a
+          six-rung ladder in <code>skills/ponytail/SKILL.md</code> — does it need to exist, is it already
+          in this codebase, does the standard library or platform do it, is a dependency already
+          installed, can it be one line, only then the minimum code that works — at three intensity
+          levels (lite, full, ultra). Around that core sit sibling skills for diff review
+          (<code>ponytail-review</code>), whole-repo audit (<code>ponytail-audit</code>), and a ledger of
+          deferred shortcuts (<code>ponytail-debt</code>), plus adapters for roughly twenty agent hosts.
+        </p>
+        <p class="note">Demonstration review — done free. No fee was charged. Paid audits are graded on the same standard.</p>
+
+        <h4>Claims check</h4>
+        <p>The current headline is:</p>
+        <ul class="numbers">
+          <li><span>Code</span><b>−53%</b></li>
+          <li><span>Time</span><b>−41%</b></li>
+          <li><span>Cost</span><b>−26%</b></li>
+          <li><span>Tokens</span><b>−45%</b></li>
+          <li><span>Risky logic that ships with a test</span><b>98%, vs 68% without the skill</b></li>
+        </ul>
+        <p>The supporting file, <code>benchmarks/results/2026-10-07-agentic.md</code>, is unusually solid for this category: <strong>39 tasks, 5 runs per arm, 585 sessions</strong>, medians per task, geometric means with <strong>95% bootstrap intervals</strong>, a full per-task table, and a user-runnable harness. It is also candid about its limits: <strong>21 of the 39 tasks measure size only</strong>, a completeness-judge miscount is explained rather than buried, and where the skill did not win the result is reported as not significant.</p>
+        <p><strong>Qualifications a reader should keep.</strong> All headline numbers come from one model (<strong>Opus 5.5</strong>) in one harness (<strong>Claude Code</strong>), run by the author; the shipped harness makes replication possible but not independent. The repo links two genuinely independent benchmarks in <code>benchmarks/README.md</code>, and one (KuldeepB19, <strong>24 tasks</strong>) found Ponytail “trims everyday bad-input handling on <strong>5 of 24 tasks</strong>,” a caveat hosted on the project's own page. Cost is the weakest claim: cheaper on <strong>30 of 38 tasks</strong>, not all of them.</p>
+        <p>On the famous original number: the <strong>80 to 94%</strong> figure came from the <strong>June 2026</strong> single-shot benchmark and counted the baseline model's prose as code. The repo does not hide this: <code>benchmarks/README.md</code> carries a dated note (“Read this number honestly,” updated <strong>2026-06-18</strong>) crediting the GitHub issue that called it out, and replaces it with the agentic result. What could not be verified from the repo alone: whether results hold on other models or hosts (the instruction-only adapters are unbenchmarked), and the raw blind-judge judgments behind the reply-preference scores.</p>
+
+        <h4>Quality findings</h4>
+        <ol>
+          <li><strong>Trigger overlap with its own sibling.</strong> The main skill's description claims “reviewing” among its coding tasks; <code>skills/ponytail-review/SKILL.md</code> claims “review this”, “code review”, and “review my PR”. Install both, as the plugin does by default, and a review request matches two skills with different output contracts.</li>
+          <li><strong>The ladder has already drifted across surfaces.</strong> <code>SKILL.md</code> rung 3 merges “standard library or a platform feature” into one step; the README's “How it works” graphic shows seven rungs with those separate, plus a test rung the prompt states separately. With <code>AGENTS.md</code> as a third surface, drift is a when, not an if.</li>
+          <li><strong>The test rule's boundary is genuinely fuzzy, and the benchmark proves it.</strong> “Non-trivial logic (a branch, a loop, a parser, money or security…)” reads crisply, but the benchmark team had to pre-sort tasks into needs-test, does-not, and borderline, excluding <strong>6 borderline tasks</strong> from the test metric. Users will hit the same ambiguity the measurers did.</li>
+          <li><strong>A strength worth naming:</strong> the requirement to end every reply with what was skipped or not checked. The benchmark's blind judge preferred Ponytail 5 replies over v4.13 mainly for exactly that ending. It is the rare prompt feature with measured evidence behind it.</li>
+        </ol>
+
+        <h4>Safety findings</h4>
+        <p>The obvious fear with a “write less” skill is that the savings come out of validation, error handling, and tests. Ponytail defends against this in writing: <code>SKILL.md</code> carries an explicit never-cut list (“validation at trust boundaries, error handling that prevents data loss, security, accessibility, the calibration real hardware needs, anything the user asked for”), moved or merged code “keeps its error handling and validation”, and the test rule makes a check a condition of done. The benchmark's safety tier backs the text: <strong>six security tasks</strong> (SQL injection, path traversal, forged tokens, rate limiting, malformed CSV, caching), <strong>all 30 runs passed in every arm</strong>, and hidden-check pass rates level with no skill (<strong>96.7% vs 95.6%</strong>).</p>
+        <p><strong>Three residual risks.</strong> First, placement: the never-cut list sits at the end of the prompt, after six rungs of cut pressure; a gate placed after the decision it constrains is weaker than one placed before it. Second, error handling is protected only where it “prevents data loss”; error handling kept for debuggability is exactly what a lazy pass trims, a risk the linked independent benchmark's bad-input-handling finding hints at. Third, test depth: in cells where a test exists, Ponytail's tests caught <strong>69% of injected bugs</strong>, slightly below no-skill's <strong>77%</strong>. The skill reliably produces a test; it is a little thinner than the one an unhurried agent writes.</p>
+
+        <h4>Verdict</h4>
+        <div class="verdict">
+          <p>Grade: A-</p>
+          <p>Ponytail is the rare viral skill that survives its own audit. The prompt is short, specific, and honest about its priorities; the guardrails are written down where a reviewer can check them; and the benchmark file is more transparent about methodology and failure than most published evaluations, including a public correction of the inflated number that made it famous. The deductions are real but fixable: a self-inflicted trigger collision, a ladder already drifting across its own surfaces, and safety rules that sit one paragraph too late.</p>
+        </div>
+
+        <h4>Three fixes, in priority order</h4>
+        <ol>
+          <li><strong>Resolve the review trigger collision.</strong> Remove “reviewing” from the main skill's description, or state that review requests route to <code>ponytail-review</code>. One request should never match two of your own skills.</li>
+          <li><strong>Move the never-cut list above the ladder</strong>, as a gate the rungs are read through, and widen the error-handling clause beyond data loss to cover error handling kept for diagnosis. The rule is good; its position and scope undersell it.</li>
+          <li><strong>Pin the ladder to one canonical text.</strong> Generate or CI-check the README ladder and compact <code>AGENTS.md</code> against <code>SKILL.md</code>, and label headline numbers with their scope (“Opus 5.5, Claude Code, author-run”) wherever they appear. They are strong enough to carry their caveats.</li>
+        </ol>
+      </section>
+
+      <!-- Booking -->
+      <section class="book" aria-labelledby="book-h">
+        <h2 id="book-h">Book an audit</h2>
+        <p>Booking is one email. You get a reply confirming scope, the fixed price, and a start date — before any work or payment.</p>
+
+        <p class="pick-label" id="pick-label">WHICH AUDIT?</p>
+        <div class="pick" role="group" aria-labelledby="pick-label">
+          <button type="button" id="pick-skill" aria-pressed="true">Skill Audit <span class="p-price">$249 founding</span></button>
+          <button type="button" id="pick-data" aria-pressed="false">Data Cleanup Audit <span class="p-price">$1,500 fixed</span></button>
+        </div>
+
+        <div class="include">
+          <span class="i-label" id="include-label">INCLUDE IN YOUR EMAIL</span>
+          <ul id="include-list">
+            <li>A link to the skill (repo, registry listing, or attached files)</li>
+            <li>Where it's published and who uses it</li>
+            <li>Anything you're already unsure about — optional, but it sharpens the audit</li>
+          </ul>
+        </div>
+
+        <a class="cta" id="cta" href="mailto:jacobflanglais@gmail.com?subject=Skill%20Audit%20%E2%80%94%20booking%20request&amp;body=Hi%2C%0A%0AI%27d%20like%20to%20book%20a%20Skill%20Audit%20(%24249%20founding%20price).%0A%0ASkill%20link%3A%20%0AWhere%20it%27s%20published%3A%20%0AAnything%20I%27m%20already%20unsure%20about%3A%20%0A"><span id="cta-text">Book a Skill Audit by email</span> →</a>
+        <p class="fineprint">To jacobflanglais@gmail.com. Opens your email app with the details pre-filled. No payment until scope is agreed in the reply.</p>
+
+        <div class="after">
+          <div><span class="n">1</span><p><strong>You email</strong>Send the link or the source list. Two minutes, no form, no call.</p></div>
+          <div><span class="n">2</span><p><strong>Scope is confirmed</strong>A reply with the fixed price, what is covered, and a start date.</p></div>
+          <div><span class="n">3</span><p><strong>Report arrives</strong>The written report lands in your inbox: findings, and the grade where the audit is a skill audit.</p></div>
+        </div>
+      </section>
+
+      <footer>
+        <p>Skill Audit — audits by Jacob Langlais.</p>
+        <p>Skill Audit $249, founding price for the first five · Data Cleanup Audit $1,500, fixed fee · Booked by email</p>
+      </footer>
+
+    </div>
+
+    <script>
+      (function () {
+        var skillBtn = document.getElementById('pick-skill');
+        var dataBtn = document.getElementById('pick-data');
+        var cta = document.getElementById('cta');
+        var ctaText = document.getElementById('cta-text');
+        var includeList = document.getElementById('include-list');
+
+        var offers = {
+          skill: {
+            subject: 'Skill Audit \u2014 booking request',
+            body: "Hi,\n\nI'd like to book a Skill Audit ($249 founding price).\n\nSkill link: \nWhere it's published: \nAnything I'm already unsure about: \n",
+            cta: 'Book a Skill Audit by email',
+            include: [
+              'A link to the skill (repo, registry listing, or attached files)',
+              "Where it's published and who uses it",
+              "Anything you're already unsure about \u2014 optional, but it sharpens the audit"
+            ]
+          },
+          data: {
+            subject: 'Data Cleanup Audit \u2014 booking request',
+            body: "Hi,\n\nI'd like to book a Data Cleanup Audit ($1,500 fixed fee).\n\nCompany: \nData sources in scope (wikis, drives, tickets, databases\u2026): \nWhat the agents will need to do with this data: \n",
+            cta: 'Book a Data Cleanup Audit by email',
+            include: [
+              'Your company and what the agents are being built to do',
+              'The data sources in scope \u2014 wikis, drives, ticket systems, docs, databases',
+              'Rough size: how many sources, and how many documents if you know it'
+            ]
+          }
+        };
+
+        function select(which) {
+          var o = offers[which];
+          skillBtn.setAttribute('aria-pressed', which === 'skill' ? 'true' : 'false');
+          dataBtn.setAttribute('aria-pressed', which === 'data' ? 'true' : 'false');
+          cta.setAttribute('href', 'mailto:jacobflanglais@gmail.com?subject=' + encodeURIComponent(o.subject) + '&body=' + encodeURIComponent(o.body));
+          ctaText.textContent = o.cta;
+          includeList.innerHTML = '';
+          o.include.forEach(function (item) {
+            var li = document.createElement('li');
+            li.textContent = item;
+            includeList.appendChild(li);
+          });
+        }
+
+        skillBtn.addEventListener('click', function () { select('skill'); });
+        dataBtn.addEventListener('click', function () { select('data'); });
+      })();
+    </script>
+  </body>
+</html>
